@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Form } from "react-bootstrap";
 
 function FileUpload() {
   const handleFileUpload = (event) => {
@@ -6,9 +7,12 @@ function FileUpload() {
   };
 
   return (
-    <div>
-      <input type="file" multiple onChange={handleFileUpload} />
-    </div>
+    <Form onSubmit={handleFileUpload}>
+
+      <Button variant="primary" type="submit">
+        Upload
+      </Button>
+    </Form>
   );
 }
 
