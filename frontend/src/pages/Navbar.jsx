@@ -14,9 +14,7 @@ function AppNavbar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
               <Nav.Link href="/create" active={pathname === "/create"}>Create</Nav.Link>
-              <Nav.Link href="/read" active={pathname === "/read"}>Read</Nav.Link>
-              <Nav.Link href="/update" active={pathname === "/update"}>Update</Nav.Link>
-              <Nav.Link href="/delete" active={pathname === "/delete"}>Delete</Nav.Link>
+              <Nav.Link href="/query" active={pathname === "/query"}>Query</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
