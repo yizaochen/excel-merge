@@ -1,6 +1,8 @@
+import uvicorn
 from fastapi import FastAPI, HTTPException, Depends, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy import and_, true
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import date
@@ -55,6 +57,15 @@ class OrderUpdate(BaseModel):
     ProductType: Optional[str] = None
     DeliveryMethod: Optional[str] = None
     BatchID: Optional[str] = None
+
+
+class OrderQuery(BaseModel):
+    BatchID: Optional[str] = None
+    OrderNumber: Optional[str] = None
+    CustomerName: Optional[str] = None
+    ProductName: Optional[str] = None
+    StartDate: Optional[date] = None
+    EndDate: Optional[date] = None
 
 
 def get_date(date_str: str) -> date:
@@ -136,3 +147,41 @@ async def upload_files(files: List[UploadFile] = File(...), batch_id: str = Form
         total_rows_processed += len(df)
     db.commit()
     return {"filenames": [file.filename for file in files], "rows_processed": total_rows_processed}
+
+
+@app.get("/find/")
+def recommend(column_name: str, keyword: str, db: Session = Depends(get_db)):
+    if column_name not in ['BatchID', 'OrderNumber', 'CustomerName', 'ProductName']:
+        raise HTTPException(status_code=400, detail="Invalid column name")
+    results = db.query(Order).filter(getattr(Order, column_name).like(f'%{keyword}%')).all()
+    data = [getattr(result, column_name) for result in results]
+    data = list(set(data)) # make results unique, not duplicate
+    return data
+
+
+@app.post("/query/")
+def query_orders(query: OrderQuery, db: Session = Depends(get_db)):
+    filters = []
+    if query.BatchID:
+        filters.append(Order.BatchID == query.BatchID)
+    if query.OrderNumber:
+        filters.append(Order.OrderNumber == query.OrderNumber)
+    if query.CustomerName:
+        filters.append(Order.CustomerName == query.CustomerName)
+    if query.ProductName:
+        filters.append(Order.ProductName == query.ProductName)
+    if query.StartDate:
+        filters.append(Order.OrderDate >= query.StartDate)
+    if query.EndDate:
+        filters.append(Order.OrderDate <= query.EndDate)
+
+    if filters:
+        results = db.query(Order).filter(and_(*filters)).all()
+    else:
+        results = db.query(Order).filter(true()).all()
+        
+    return results
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

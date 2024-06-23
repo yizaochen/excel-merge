@@ -16,6 +16,8 @@ const DateRangePicker = ({ startDate, setStartDate, endDate, setEndDate }) => {
             startDate={startDate}
             endDate={endDate}
             className="form-control"
+            name="startDate"
+            id="startDate"
           />
         </div>
       </Form.Group>
@@ -30,6 +32,8 @@ const DateRangePicker = ({ startDate, setStartDate, endDate, setEndDate }) => {
             endDate={endDate}
             minDate={startDate}
             className="form-control"
+            name="endDate"
+            id="endDate"
           />
         </div>
       </Form.Group>

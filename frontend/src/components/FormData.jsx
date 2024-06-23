@@ -87,9 +87,3 @@ function FormData({
 
 export default FormData;
 
-// {
-//   label: "訂單日期",
-//   value: orderDate,
-//   setter: setOrderDate,
-//   field: "orderDate",
-// },

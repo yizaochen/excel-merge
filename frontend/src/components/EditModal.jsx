@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Form, Button } from "react-bootstrap";
+import DatePicker from "react-datepicker";
 
 function EditModal({ show, data, onChange, onSave, onClose }) {
   return (
@@ -10,25 +11,39 @@ function EditModal({ show, data, onChange, onSave, onClose }) {
       <Modal.Body>
         <Form>
           {[
-            { label: "Order Number", field: "orderNumber" },
-            { label: "Order Date", field: "orderDate" },
-            { label: "Customer Name", field: "customerName" },
-            { label: "Phone Number", field: "phoneNumber" },
-            { label: "Email", field: "email" },
-            { label: "Product ID", field: "productID" },
-            { label: "Product Name", field: "productName" },
-            { label: "Quantity", field: "quantity" },
-            { label: "Product Type", field: "productType" },
-            { label: "Delivery Method", field: "deliveryMethod" },
-            { label: "Batch ID", field: "batchID" },
+            { label: "Order Number", field: "OrderNumber" },
+            { label: "Order Date", field: "OrderDate" },
+            { label: "Customer Name", field: "CustomerName" },
+            { label: "Phone Number", field: "PhoneNumber" },
+            { label: "Email", field: "Email" },
+            { label: "Product ID", field: "ProductID" },
+            { label: "Product Name", field: "ProductName" },
+            { label: "Quantity", field: "Quantity" },
+            { label: "Product Type", field: "ProductType" },
+            { label: "Delivery Method", field: "DeliveryMethod" },
+            { label: "Batch ID", field: "BatchID" },
           ].map(({ label, field }) => (
-            <Form.Group className="mb-3" controlId={`editForm-${field}`} key={field}>
+            <Form.Group
+              className="mb-3"
+              controlId={`editForm-${field}`}
+              key={field}
+            >
               <Form.Label>{label}</Form.Label>
-              <Form.Control
-                type="text"
-                value={data[field]}
-                onChange={(e) => onChange(field, e.target.value)}
-              />
+              {field === "OrderDate" ? (
+                <div className="d-flex">
+                  <DatePicker
+                    selected={new Date(data[field])}
+                    onChange={(date) => onChange(field, date)}
+                    className="form-control"
+                  />
+                </div>
+              ) : (
+                <Form.Control
+                  type="text"
+                  value={data[field] || ""}
+                  onChange={(e) => onChange(field, e.target.value)}
+                />
+              )}
             </Form.Group>
           ))}
         </Form>

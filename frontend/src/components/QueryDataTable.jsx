@@ -3,6 +3,12 @@ import { Table, Button } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 function QueryDataTable({ data, handleUpdate, handleDelete }) {
+  const isEmpty = data.length === 0;
+
+  if (isEmpty) {
+    return null;
+  }
+
   return (
     <Table className="my-5" striped bordered hover>
       <thead>
@@ -22,17 +28,17 @@ function QueryDataTable({ data, handleUpdate, handleDelete }) {
       </thead>
       <tbody>
         {data.map((record) => (
-          <tr key={record.orderID}>
-            <td>{record.orderNumber}</td>
-            <td>{record.orderDate}</td>
-            <td>{record.customerName}</td>
-            <td>{record.phoneNumber}</td>
-            <td>{record.email}</td>
-            <td>{record.productID}</td>
-            <td>{record.productName}</td>
-            <td>{record.quantity}</td>
-            <td>{record.deliveryMethod}</td>
-            <td>{record.batchID}</td>
+          <tr key={record.OrderID}>
+            <td>{record.OrderNumber}</td>
+            <td>{record.OrderDate}</td>
+            <td>{record.CustomerName}</td>
+            <td>{record.PhoneNumber}</td>
+            <td>{record.Email}</td>
+            <td>{record.ProductID}</td>
+            <td>{record.ProductName}</td>
+            <td>{record.Quantity}</td>
+            <td>{record.DeliveryMethod}</td>
+            <td>{record.BatchID}</td>
             <td>
               <div className="d-flex flex-column">
                 <Button
